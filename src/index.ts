@@ -223,6 +223,40 @@ export class LinkedList<T = any> {
 
     return anode;
   }
+
+  insertionSort(): LinkedList<T> {
+    if (this.head === null) return this;
+
+    const sorted_list = new LinkedList<T>();
+    let head_pointer = this.head;
+
+    do {
+      const next_pointer = head_pointer?.right;
+
+      if (!next_pointer) {
+        sorted_list.push(head_pointer.value);
+        sorted_list.sort();
+        this.head = sorted_list.head;
+        break;
+      }
+
+      if (head_pointer.value > next_pointer?.value) {
+        const swapped_node = this.swap(head_pointer, next_pointer);
+        sorted_list.push(swapped_node.value);
+
+        head_pointer = swapped_node.right as ListNode<T>;
+      } else {
+        sorted_list.push(head_pointer.value);
+        head_pointer = next_pointer;
+      }
+
+      sorted_list.sort();
+    } while (head_pointer !== null);
+
+    return this;
+  }
+
+  shellSort() {}
 }
 
 const list = new LinkedList<number>();
@@ -232,4 +266,5 @@ list.push(40);
 list.push(20);
 
 console.log(`Items`, list.getAll());
-console.log(`Sorted Items`, list.sort().getAll());
+// console.log(`Sorted Items`, list.sort().getAll());
+console.log(`Insertion Sorted Items`, list.insertionSort().getAll());
