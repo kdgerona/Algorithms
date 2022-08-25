@@ -168,8 +168,8 @@ export class LinkedList<T = any> {
     return;
   }
 
-  sort<P = any>(): Array<T> {
-    if (this.head === null) return [];
+  sort(): LinkedList<T> {
+    if (this.head === null) return this;
 
     let temp_head = this.head;
     let head_pointer = this.head;
@@ -180,7 +180,7 @@ export class LinkedList<T = any> {
       const next_pointer = head_pointer.right as ListNode<T>;
 
       if (!next_pointer) {
-        console.log(`Swap Operation Count - ${swap_operation_count}`)
+        console.log(`Swap Operation Count - ${swap_operation_count}`);
         if (swap_operation_count !== 0) {
           console.log('Reevaluating...');
           head_pointer = temp_head;
@@ -189,6 +189,7 @@ export class LinkedList<T = any> {
 
           continue;
         } else {
+          this.head = temp_head;
           should_execute_swap_operation = false;
           break;
         }
@@ -211,10 +212,7 @@ export class LinkedList<T = any> {
       }
     } while (head_pointer !== null && should_execute_swap_operation);
 
-    this.head = temp_head;
-    const getList = this.getAll();
-
-    return getList;
+    return this;
   }
 
   swap(anode: ListNode<T>, bnode: ListNode<T>): ListNode<T> {
@@ -234,4 +232,4 @@ list.push(40);
 list.push(20);
 
 console.log(`Items`, list.getAll());
-console.log(`Sorted Items`, list.sort());
+console.log(`Sorted Items`, list.sort().getAll());
