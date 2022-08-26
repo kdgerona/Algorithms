@@ -1,4 +1,4 @@
-import { LinkedList } from './index';
+import LinkedList from './linked-list/LinkedList';
 
 export const generateRandomListValues = (list: LinkedList, n: number) => {
   for (let x = 0; x <= n; x++) {

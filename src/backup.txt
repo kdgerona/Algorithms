@@ -1,0 +1,357 @@
+import { generateRandomListValues, handleLog } from './utils';
+
+export class ListNode<T = any> {
+  value: T;
+  right: ListNode<T> | null;
+  left: ListNode<T> | null;
+  constructor(value: T) {
+    this.right = null;
+    this.left = null;
+    this.value = value;
+  }
+}
+
+export class LinkedList<T = any> {
+  head: ListNode<T> | null;
+
+  constructor() {
+    this.head = null;
+  }
+  push(value: T): T {
+    const node: ListNode<T> = {
+      value,
+      left: null,
+      right: null,
+    };
+
+    if (this.head == null) {
+      this.head = node;
+      return value;
+    }
+
+    let curr: ListNode<T> = this.head;
+    while (curr.right != null) {
+      curr = curr.right;
+    }
+    node.left = curr;
+    curr.right = node;
+
+    return value;
+  }
+  pop(): T | null {
+    if (this.head == null) return null;
+    let cur = this.head;
+    while (cur.right != null) {
+      cur = cur.right;
+    }
+    let curValue = cur.value;
+    if (cur.left === this.head) {
+      this.head = null;
+    } else {
+      cur.left!.right = null;
+    }
+
+    return curValue;
+  }
+  shift(): T | null {
+    if (this.head === null) return null;
+    let headValue = this.head.value;
+
+    if (this.head.right === null) {
+      this.head = null;
+    } else {
+      this.head.right!.left = null;
+      this.head = this.head.right;
+    }
+    return headValue;
+  }
+  getAll(): Array<T> {
+    if (this.head == null) return [];
+    if (this.head.right === null) return [this.head.value];
+
+    let values = [];
+    let cur: ListNode<T> | null = this.head;
+    while (cur != null) {
+      values.push(cur.value);
+      cur = cur.right;
+    }
+
+    return values;
+  }
+  get(index: number): T | null {
+    if (!this.head) return null;
+
+    // if(index == 0 )
+
+    let count = 0;
+    let cur = this.head;
+    let value: T | null = null;
+    while (count <= index && cur != null) {
+      value = cur.value;
+      count++;
+      //@ts-ignore
+      cur = cur.right;
+    }
+
+    return value;
+  }
+  remove(index: number): void {
+    if (!this.head) return;
+
+    // if(index == 0 )
+
+    let count = 0;
+    let cur = this.head;
+    while (count != index && cur != null) {
+      count++;
+      //@ts-ignore
+      cur = cur.right;
+    }
+
+    if (cur === this.head) {
+      this.head = null;
+      return;
+    }
+
+    if (cur != null) {
+      const { left, right } = cur;
+
+      cur.left!.right = right;
+      cur.right!.left = left;
+    }
+  }
+  splice(value: T, index: number = 0): T | null {
+    if (index < 0) return null;
+    if (this.head == null && index > 0) return null;
+    if (this.head == null && index == 0) return this.push(value);
+
+    let count = 0;
+    let cur = this.head;
+    while (count != index && cur != null) {
+      cur = cur?.right;
+      count++;
+    }
+    if (count != index) {
+      return null;
+    } else {
+      const node: ListNode<T> = {
+        left: cur!.left,
+        right: cur,
+        value,
+      };
+      cur!.left!.right = node;
+    }
+
+    return value;
+  }
+
+  map<P = any>(fn: (item: T) => P): Array<P> {
+    if (this.head === null) return [];
+
+    const results = [];
+    let cur = this.head;
+    while (cur != null) {
+      results.push(fn(cur.value));
+      cur = cur.right as ListNode<T>;
+    }
+
+    return results;
+  }
+
+  forEach(fn: (item: ListNode<T>) => void): void {
+    if (this.head === null) return;
+
+    let cur = this.head;
+    while (cur != null) {
+      fn(cur);
+      cur = cur.right as ListNode<T>;
+    }
+
+    return;
+  }
+
+  sort(): LinkedList<T> {
+    if (this.head === null) return this;
+
+    let temp_head = this.head;
+    let head_pointer = this.head;
+    let should_execute_swap_operation = true;
+    let swap_operation_count = 0;
+
+    do {
+      const next_pointer = head_pointer.right as ListNode<T>;
+
+      if (!next_pointer) {
+        // console.log(`Swap Operation Count - ${swap_operation_count}`);
+        if (swap_operation_count !== 0) {
+          // console.log('Reevaluating...');
+          head_pointer = temp_head;
+          swap_operation_count = 0;
+          should_execute_swap_operation = true;
+
+          continue;
+        } else {
+          this.head = temp_head;
+          should_execute_swap_operation = false;
+          break;
+        }
+      }
+
+      // console.log(
+      //   'Evaluating...',
+      //   head_pointer.value,
+      //   next_pointer?.value ?? null
+      // );
+      if (head_pointer.value > next_pointer?.value) {
+        const swapped_node = this.swap(head_pointer, next_pointer);
+        swap_operation_count += 1;
+
+        if (!swapped_node.left) temp_head = swapped_node;
+
+        head_pointer = swapped_node.right as ListNode<T>;
+      } else {
+        head_pointer = next_pointer;
+      }
+    } while (head_pointer !== null && should_execute_swap_operation);
+
+    return this;
+  }
+
+  swap(anode: ListNode<T>, bnode: ListNode<T>): ListNode<T> {
+    const clonedNode = { ...anode };
+
+    anode.value = bnode.value;
+    bnode.value = clonedNode.value;
+
+    return anode;
+  }
+
+  insertionSort(): LinkedList<T> {
+    if (this.head === null) return this;
+
+    const sorted_list = new LinkedList<T>();
+    let head_pointer = this.head;
+
+    do {
+      const next_pointer = head_pointer?.right;
+
+      if (!next_pointer) {
+        sorted_list.push(head_pointer.value);
+        sorted_list.sort();
+        this.head = sorted_list.head;
+        break;
+      }
+
+      if (head_pointer.value > next_pointer?.value) {
+        const swapped_node = this.swap(head_pointer, next_pointer);
+        sorted_list.push(swapped_node.value);
+
+        head_pointer = swapped_node.right as ListNode<T>;
+      } else {
+        sorted_list.push(head_pointer.value);
+        head_pointer = next_pointer;
+      }
+
+      sorted_list.sort();
+    } while (head_pointer !== null);
+
+    return this;
+  }
+
+  getNode(index: number): ListNode<T> | null {
+    if (!this.head) return null;
+
+    // if(index == 0 )
+
+    let count = 0;
+    let cur = this.head;
+    let node: ListNode<T> | null = null;
+    while (count <= index && cur != null) {
+      node = cur;
+      count++;
+      //@ts-ignore
+      cur = cur.right;
+    }
+
+    return node;
+  }
+
+  // Reverse Insert Sort
+  reverseInsertionSort(node: ListNode): LinkedList {
+    if (node === null) return node;
+
+    const sorted_list = new LinkedList<T>();
+    let head_pointer = node;
+
+    do {
+      const next_pointer = head_pointer?.left;
+
+      if (!next_pointer) {
+        sorted_list.push(head_pointer.value);
+        sorted_list.sort();
+        this.head = sorted_list.head;
+        break;
+      }
+
+      if (head_pointer.value > next_pointer?.value) {
+        const swapped_node = this.swap(head_pointer, next_pointer);
+        sorted_list.push(swapped_node.value);
+
+        head_pointer = swapped_node.left as ListNode<T>;
+      } else {
+        sorted_list.push(head_pointer.value);
+        head_pointer = next_pointer;
+      }
+
+      sorted_list.sort();
+    } while (head_pointer !== null);
+
+    return this;
+  }
+
+  shellSort() {
+    const array = list.getAll();
+    let array_length = array.length;
+    const gap_size = 2;
+
+    for (
+      let gap = Math.floor(array_length / gap_size);
+      gap > 0;
+      gap = Math.floor(gap / gap_size)
+    ) {
+      for (let position = gap; position < array_length; position += 1) {
+        let curr_picked = this.getNode(position);
+        // const cloned_curr_picked = { ...this.getNode(position) };
+
+        let reverse_pointer = this.getNode(position - gap);
+
+        do {
+          //@ts-ignore
+          if (curr_picked?.value < reverse_pointer.value) {
+            //@ts-ignore
+            this.swap(curr_picked, reverse_pointer);
+
+            curr_picked = reverse_pointer;
+
+            continue;
+          }
+
+          //@ts-ignore
+          reverse_pointer = reverse_pointer.left;
+        } while (reverse_pointer !== null);
+      }
+    }
+
+    return this;
+  }
+}
+
+const list = new LinkedList<number>();
+
+generateRandomListValues(list, 1000);
+
+// console.log(`Items`, list.getAll());
+console.log(`Sorted Items`);
+// list.sort().map(handleLog)
+// list.insertionSort().map(handleLog)
+list.shellSort().map(handleLog);
