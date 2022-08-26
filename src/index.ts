@@ -1,3 +1,5 @@
+import { generateRandomListValues, handleLog } from './utils';
+
 export class ListNode<T = any> {
   value: T;
   right: ListNode<T> | null;
@@ -180,9 +182,9 @@ export class LinkedList<T = any> {
       const next_pointer = head_pointer.right as ListNode<T>;
 
       if (!next_pointer) {
-        console.log(`Swap Operation Count - ${swap_operation_count}`);
+        // console.log(`Swap Operation Count - ${swap_operation_count}`);
         if (swap_operation_count !== 0) {
-          console.log('Reevaluating...');
+          // console.log('Reevaluating...');
           head_pointer = temp_head;
           swap_operation_count = 0;
           should_execute_swap_operation = true;
@@ -195,11 +197,11 @@ export class LinkedList<T = any> {
         }
       }
 
-      console.log(
-        'Evaluating...',
-        head_pointer.value,
-        next_pointer?.value ?? null
-      );
+      // console.log(
+      //   'Evaluating...',
+      //   head_pointer.value,
+      //   next_pointer?.value ?? null
+      // );
       if (head_pointer.value > next_pointer?.value) {
         const swapped_node = this.swap(head_pointer, next_pointer);
         swap_operation_count += 1;
@@ -274,185 +276,82 @@ export class LinkedList<T = any> {
     return node;
   }
 
-  shellSort() {
-    // let arr = list.getAll();
-    // const n = arr.length;
+  // Reverse Insert Sort
+  reverseInsertionSort(node: ListNode): LinkedList {
+    if (node === null) return node;
 
-    // const tgap = Math.floor(n / 2);
-    // console.log('Floor', tgap, n / 2, tgap / 2);
+    const sorted_list = new LinkedList<T>();
+    let head_pointer = node;
 
-    // // Start with a big gap, then reduce the gap
-    // for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
-    //   // Do a gapped insertion sort for this gap size.
-    //   // The first gap elements a[0..gap-1] are already
-    //   // in gapped order keep adding one more element
-    //   // until the entire array is gap sorted
-    //   for (let i = gap; i < n; i += 1) {
-    //     // add a[i] to the elements that have been gap
-    //     // sorted save a[i] in temp and make a hole at
-    //     // position i
-    //     let temp = arr[i];
+    do {
+      const next_pointer = head_pointer?.left;
 
-    //     // shift earlier gap-sorted elements up until
-    //     // the correct location for a[i] is found
-    //     let j;
-    //     for (j = i; j >= gap && arr[j - gap] > temp; j -= gap)
-    //       arr[j] = arr[j - gap];
-
-    //     // put temp (the original a[i]) in its correct
-    //     // location
-    //     arr[j] = temp;
-    //   }
-    // }
-    // return arr;
-
-    const array = list.getAll();
-    let array_length = array.length;
-    // let head_pointer = this.head;
-
-    console.log('LN', array_length);
-
-    for (
-      let gap = Math.floor(array_length / 2);
-      gap > 0;
-      gap = Math.floor(gap / 2)
-    ) {
-      console.log('****************************ITERATOR', gap);
-
-      for (let position = gap; position < array_length; position += 1) {
-        let curr_picked = { ...this.getNode(position) };
-        // let curr_picked = this.getNode(position);
-        // const node = this.getNode(position);
-
-        console.log('+++++CURR', position);
-
-        if (!curr_picked) continue;
-
-        // DEV
-        // let leaped_picked = this.getNode(position - gap);
-
-        // if (!curr_picked || !leaped_picked) continue;
-
-        // if (curr_picked?.value < leaped_picked?.value) {
-        //   // const swapped_node = this.swap(curr_picked, leaped_picked);
-        //   // head_pointer = swapped_node;
-
-        //   this.swap(curr_picked, leaped_picked);
-        // }
-        // END
-
-        // DEV1
-        // let back_leap;
-        // let back_leap_picked;
-        // for (back_leap = position; back_leap >= gap; back_leap -= gap) {
-        //   back_leap_picked = this.getNode(back_leap - gap);
-        //   // console.log('back_leap - gap', back_leap, gap)
-        //   console.log('EXECUTE', back_leap, gap);
-
-        //   // if(!back_leap_picked) continue
-
-        //   console.log('EVAL', back_leap_picked?.value, curr_picked?.value);
-
-        //   //@ts-ignore
-        //   if (back_leap_picked?.value > curr_picked?.value) {
-        //     console.log('swapping', back_leap, gap);
-
-        //     //@ts-ignore
-        //     this.swap(curr_picked, back_leap_picked);
-        //   }
-        // }
-        //xsds
-        // arr[j] = arr[j - gap];
-
-        //@ts-ignore
-        // this.swap(back_leap_picked, curr_picked);
-        console.log('VALUES', this.getAll());
-        // END1
-
-        // TEST
-        let counter = position;
-        let back_leap_picked;
-        do {
-          back_leap_picked = this.getNode(counter - gap);
-
-          //@ts-ignore
-          if (back_leap_picked?.value > curr_picked?.value) {
-            console.log('swapping', counter, gap);
-
-            //@ts-ignore
-            this.swap(curr_picked, back_leap_picked);
-          }
-
-          counter -= gap
-        } while (counter >= gap);
-
-        const test = this.getNode(counter);
-        //@ts-ignore
-        this.swap(test, curr_picked)
-        // END
+      if (!next_pointer) {
+        sorted_list.push(head_pointer.value);
+        sorted_list.sort();
+        this.head = sorted_list.head;
+        break;
       }
 
-      // const orig_node
-    }
+      if (head_pointer.value > next_pointer?.value) {
+        const swapped_node = this.swap(head_pointer, next_pointer);
+        sorted_list.push(swapped_node.value);
+
+        head_pointer = swapped_node.left as ListNode<T>;
+      } else {
+        sorted_list.push(head_pointer.value);
+        head_pointer = next_pointer;
+      }
+
+      sorted_list.sort();
+    } while (head_pointer !== null);
 
     return this;
   }
 
-  shellSortOrg() {
-    let arr = list.getAll();
-    const n = arr.length;
+  shellSort() {
+    const array = list.getAll();
+    let array_length = array.length;
+    const gap_size = 2;
 
-    // const tgap = Math.floor(n / 2);
-    // console.log('Floor', tgap, n / 2, tgap / 2);
+    for (
+      let gap = Math.floor(array_length / gap_size);
+      gap > 0;
+      gap = Math.floor(gap / gap_size)
+    ) {
+      for (let position = gap; position < array_length; position += 1) {
+        let curr_picked = this.getNode(position);
+        // const cloned_curr_picked = { ...this.getNode(position) };
 
-    // Start with a big gap, then reduce the gap
-    for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
-      console.log('***********GAP', gap);
+        let reverse_pointer = this.getNode(position - gap);
 
-      // Do a gapped insertion sort for this gap size.
-      // The first gap elements a[0..gap-1] are already
-      // in gapped order keep adding one more element
-      // until the entire array is gap sorted
-      for (let i = gap; i < n; i += 1) {
-        console.log('++CURR', i);
+        do {
+          //@ts-ignore
+          if (curr_picked?.value < reverse_pointer.value) {
+            //@ts-ignore
+            this.swap(curr_picked, reverse_pointer);
 
-        // add a[i] to the elements that have been gap
-        // sorted save a[i] in temp and make a hole at
-        // position i
-        let temp = arr[i];
+            curr_picked = reverse_pointer;
 
-        // shift earlier gap-sorted elements up until
-        // the correct location for a[i] is found
-        /**
-         * 4 , 2 true , 4-2
-         * 2, 2 true, 2 - 2
-         */
-        let j;
-        for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
-          console.log('swapping', j, gap);
-          arr[j] = arr[j - gap];
-        }
+            continue;
+          }
 
-        // put temp (the original a[i]) in its correct
-        // location
-        arr[j] = temp;
-
-        console.log('VALUES', arr);
+          //@ts-ignore
+          reverse_pointer = reverse_pointer.left;
+        } while (reverse_pointer !== null);
       }
     }
-    return arr;
+
+    return this;
   }
 }
 
 const list = new LinkedList<number>();
-list.push(50);
-list.push(10);
-list.push(40);
-list.push(20);
-list.push(30);
 
-console.log(`Items`, list.getAll());
-// console.log(`Sorted Items`, list.sort().head);
-// console.log(`Insertion Sorted Items`, list.insertionSort().getAll());
-console.log(`Shell Sorted Items`, list.shellSort().getAll());
-// console.log(`Shell Sorted Orig Items`, list.shellSortOrg());
+generateRandomListValues(list, 1000);
+
+// console.log(`Items`, list.getAll());
+console.log(`Sorted Items`);
+// list.sort().map(handleLog)
+// list.insertionSort().map(handleLog)
+list.shellSort().map(handleLog);
