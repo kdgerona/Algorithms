@@ -1,11 +1,14 @@
 import ListNode from './ListNode';
 
-class LinkedList<T = any> {
+abstract class LinkedList<T = any> {
   head: ListNode<T> | null;
 
   constructor() {
     this.head = null;
   }
+
+  abstract sort(): LinkedList;
+
   push(value: T): T {
     const node: ListNode<T> = {
       value,

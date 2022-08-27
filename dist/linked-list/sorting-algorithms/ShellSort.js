@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const LinkedList_1 = __importDefault(require("../LinkedList"));
 class ShellSort extends LinkedList_1.default {
+    constructor() {
+        super();
+    }
     sort() {
         const array = this.getAll();
         let array_length = array.length;

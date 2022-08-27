@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BubbleSort_1 = __importDefault(require("../sorting-algorithms/BubbleSort"));
 class InsertionSort extends BubbleSort_1.default {
+    constructor() {
+        super();
+    }
     sort() {
         if (this.head === null)
             return this;

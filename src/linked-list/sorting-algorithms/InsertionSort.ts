@@ -3,6 +3,10 @@ import ListNode from '../ListNode';
 import BubbleSort from '../sorting-algorithms/BubbleSort';
 
 class InsertionSort<T = any> extends BubbleSort<T> {
+  constructor() {
+    super();
+  }
+
   sort(): LinkedList<T> {
     if (this.head === null) return this;
 

@@ -4,10 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
-const ShellSort_1 = __importDefault(require("./linked-list/sorting-algorithms/ShellSort"));
+const MergeSort_1 = __importDefault(require("./linked-list/sorting-algorithms/MergeSort"));
 // const list = new BubbleSort<number>();
 // const list = new InsertionSort<number>();
-const list = new ShellSort_1.default();
+// const list = new ShellSort<number>();
+const list = new MergeSort_1.default();
 (0, utils_1.generateRandomListValues)(list, 1000);
 console.log(`Sorted Items`);
-list.sort().map(utils_1.handleLog);
+// list.sort().map(handleLog);
+list.sort();

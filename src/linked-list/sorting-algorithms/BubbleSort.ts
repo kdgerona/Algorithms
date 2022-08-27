@@ -2,6 +2,10 @@ import LinkedList from '../LinkedList';
 import ListNode from '../ListNode';
 
 class BubbleSort<T = any> extends LinkedList<T> {
+  constructor() {
+    super();
+  }
+
   sort(): LinkedList<T> {
     if (this.head === null) return this;
 

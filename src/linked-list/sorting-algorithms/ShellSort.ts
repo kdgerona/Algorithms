@@ -1,6 +1,10 @@
 import LinkedList from '../LinkedList';
 
 class ShellSort<T = any> extends LinkedList<T> {
+  constructor() {
+    super();
+  }
+
   sort() {
     const array = this.getAll();
     let array_length = array.length;
