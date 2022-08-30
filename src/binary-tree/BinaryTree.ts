@@ -5,16 +5,12 @@ class BinaryTree<T = any> {
 
   push(value: T) {
     if (!this.root) {
-      this.root = {
-        left: null,
-        right: null,
-        value,
-      };
+      this.root = new LeafNode(value);
 
       return;
     }
 
-    this.setter(this.root, value)
+    this.setter(this.root, value);
   }
 
   hasNode(node: LeafNode | null) {
@@ -22,7 +18,7 @@ class BinaryTree<T = any> {
   }
 
   setter(node: LeafNode, value: T) {
-    if(!node) return
+    if (!node) return;
 
     // Set to right leaf
     if (node.value >= value) {
@@ -31,11 +27,7 @@ class BinaryTree<T = any> {
         return;
       }
 
-      node.right = {
-        left: null,
-        right: null,
-        value,
-      };
+      node.right = new LeafNode(value);
     } else {
       // Set to left leaf
       if (node.left) {
@@ -43,52 +35,48 @@ class BinaryTree<T = any> {
         return;
       }
 
-      node.left = {
-        left: null,
-        right: null,
-        value,
-      };
+      node.left = new LeafNode(value);
     }
   }
 
   // Left, Root, Right
-  inOrder(node: LeafNode | null){
-    if(!node) return
+  inOrder(node: LeafNode | null) {
+    if (!node) return;
 
-    this.inOrder(node.left)
+    this.inOrder(node.left);
 
-    console.log(node.value)
+    console.log(node.value);
 
-    this.inOrder(node.right)
+    this.inOrder(node.right);
   }
 
   // Root, Left, Right
   preOrder(node: LeafNode | null) {
-    if(!node) return
+    if (!node) return;
 
-    console.log(node.value)
+    console.log(node.value);
 
-    this.preOrder(node.left)
+    this.preOrder(node.left);
 
-    this.preOrder(node.right)
+    this.preOrder(node.right);
   }
 
   // Left, Right, Root
-  postOrder(node: LeafNode | null){
-    if(!node) return
+  postOrder(node: LeafNode | null) {
+    if (!node) return;
 
-    this.postOrder(node.left)
+    this.postOrder(node.left);
 
-    this.postOrder(node.right)
+    this.postOrder(node.right);
 
-    console.log(node.value)
+    console.log(node.value);
   }
 
-  traverse(){
-    this.inOrder(this.root)
+  traverse() {
+    this.inOrder(this.root);
     // this.preOrder(this.root)
     // this.postOrder(this.root)
-}
+  }
 }
 
 export default BinaryTree;

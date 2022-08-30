@@ -1,16 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const LeafNode_1 = __importDefault(require("./LeafNode"));
 class BinaryTree {
     constructor() {
         this.root = null;
     }
     push(value) {
         if (!this.root) {
-            this.root = {
-                left: null,
-                right: null,
-                value,
-            };
+            this.root = new LeafNode_1.default(value);
             return;
         }
         this.setter(this.root, value);
@@ -27,11 +27,7 @@ class BinaryTree {
                 this.setter(node === null || node === void 0 ? void 0 : node.right, value);
                 return;
             }
-            node.right = {
-                left: null,
-                right: null,
-                value,
-            };
+            node.right = new LeafNode_1.default(value);
         }
         else {
             // Set to left leaf
@@ -39,11 +35,7 @@ class BinaryTree {
                 this.setter(node === null || node === void 0 ? void 0 : node.left, value);
                 return;
             }
-            node.left = {
-                left: null,
-                right: null,
-                value,
-            };
+            node.left = new LeafNode_1.default(value);
         }
     }
     // Left, Root, Right
