@@ -18,8 +18,11 @@ class MergeSort extends LinkedList_1.default {
     mergeSort() { }
     sort() {
         this.pointer = new ExtendedLinkedList_1.default(this.head);
-        this.merge_list = new ExtendedLinkedList_1.default();
-        this.merge();
+        this.left_list = new ExtendedLinkedList_1.default();
+        this.right_list = new ExtendedLinkedList_1.default();
+        let count;
+        // while(this.pointer.){
+        // }
         return this;
     }
 }
