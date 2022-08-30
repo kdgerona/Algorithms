@@ -1,6 +1,6 @@
-import LinkedList from '../LinkedList';
+import AbstractLinkedList from '../AbstractLinkedList';
 
-class ShellSort<T = any> extends LinkedList<T> {
+class ShellSort<T = any> extends AbstractLinkedList<T> {
   constructor() {
     super();
   }

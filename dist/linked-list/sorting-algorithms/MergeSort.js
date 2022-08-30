@@ -3,9 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const AbstractLinkedList_1 = __importDefault(require("../AbstractLinkedList"));
+// import ListNode from '../ListNode';
 const LinkedList_1 = __importDefault(require("../LinkedList"));
-const ExtendedLinkedList_1 = __importDefault(require("../ExtendedLinkedList"));
-class MergeSort extends LinkedList_1.default {
+class MergeSort extends AbstractLinkedList_1.default {
     constructor() {
         super();
     }
@@ -17,9 +18,9 @@ class MergeSort extends LinkedList_1.default {
     }
     mergeSort() { }
     sort() {
-        this.pointer = new ExtendedLinkedList_1.default(this.head);
-        this.left_list = new ExtendedLinkedList_1.default();
-        this.right_list = new ExtendedLinkedList_1.default();
+        this.pointer = new LinkedList_1.default(this.head);
+        this.left_list = new LinkedList_1.default();
+        this.right_list = new LinkedList_1.default();
         let count;
         // while(this.pointer.){
         // }

@@ -1,12 +1,12 @@
-import LinkedList from '../LinkedList';
+import AbstractLinkedList from '../AbstractLinkedList';
 import ListNode from '../ListNode';
 
-class BubbleSort<T = any> extends LinkedList<T> {
+class BubbleSort<T = any> extends AbstractLinkedList<T> {
   constructor() {
     super();
   }
 
-  sort(): LinkedList<T> {
+  sort(): AbstractLinkedList<T> {
     if (this.head === null) return this;
 
     let temp_head = this.head;

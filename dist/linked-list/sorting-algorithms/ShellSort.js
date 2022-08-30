@@ -3,8 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const LinkedList_1 = __importDefault(require("../LinkedList"));
-class ShellSort extends LinkedList_1.default {
+const AbstractLinkedList_1 = __importDefault(require("../AbstractLinkedList"));
+class ShellSort extends AbstractLinkedList_1.default {
     constructor() {
         super();
     }

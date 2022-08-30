@@ -1,11 +1,11 @@
+import AbstractLinkedList from '../AbstractLinkedList';
+// import ListNode from '../ListNode';
 import LinkedList from '../LinkedList';
-import ListNode from '../ListNode';
-import ExtendedLinkedList from '../ExtendedLinkedList';
 
-class MergeSort<T = any> extends LinkedList {
-  left_list?: ExtendedLinkedList<LinkedList>;
-  right_list?: ExtendedLinkedList<LinkedList>;
-  pointer?: ExtendedLinkedList<T>;
+class MergeSort<T = any> extends AbstractLinkedList {
+  left_list?: LinkedList<AbstractLinkedList>;
+  right_list?: LinkedList<AbstractLinkedList>;
+  pointer?: LinkedList<T>;
 
   constructor() {
     super();
@@ -19,10 +19,10 @@ class MergeSort<T = any> extends LinkedList {
 
   mergeSort(): any {}
 
-  sort(): LinkedList<T> {
-    this.pointer = new ExtendedLinkedList<T>(this.head);
-    this.left_list = new ExtendedLinkedList<LinkedList>();
-    this.right_list = new ExtendedLinkedList<LinkedList>();
+  sort(): AbstractLinkedList<T> {
+    this.pointer = new LinkedList<T>(this.head);
+    this.left_list = new LinkedList<AbstractLinkedList>();
+    this.right_list = new LinkedList<AbstractLinkedList>();
 
     let count;
     // while(this.pointer.){
